@@ -23,8 +23,12 @@ class BoothsController < ApplicationController
 
     if booth_params[:invited_users]
       emails_array = booth_params[:invited_users].split(",")
+
+      emails_array.each do |email|
+        User.invite!(email: email)
+      end
     end
-    
+
     if @booth.save
       redirect_to conference_booths_path,
                   notice: 'Booth successfully created.'
