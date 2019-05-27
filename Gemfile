@@ -225,6 +225,9 @@ gem 'dalli'
 # for input tags
 gem 'bootstrap-tagsinput-rails'
 
+# for iniviting users
+gem 'devise_invitable', '~> 2.0.0'
+
 # Use guard and spring for testing in development
 group :development do
   # to launch specs when files are modified
