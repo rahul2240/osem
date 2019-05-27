@@ -21,6 +21,10 @@ class BoothsController < ApplicationController
 
     @booth.submitter = current_user
 
+    if booth_params[:invited_users]
+      emails_array = booth_params[:invited_users].split(",")
+    end
+    
     if @booth.save
       redirect_to conference_booths_path,
                   notice: 'Booth successfully created.'
@@ -94,6 +98,6 @@ class BoothsController < ApplicationController
 
   def booth_params
     params.require(:booth).permit(:title, :description, :reasoning, :state, :picture, :conference_id,
-                                  :created_at, :updated_at, :submitter_relationship, :website_url, responsible_ids: [], invited_users: [])
+                                  :created_at, :updated_at, :submitter_relationship, :website_url, :invited_users, responsible_ids: [])
   end
 end
