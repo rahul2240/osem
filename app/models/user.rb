@@ -49,7 +49,7 @@ class User < ApplicationRecord
                       [:ichain_authenticatable, :ichain_registerable, :omniauthable, omniauth_providers: []]
                     else
                       [:database_authenticatable, :registerable,
-                       :recoverable, :rememberable, :trackable, :validatable, :confirmable,
+                       :recoverable, :rememberable, :trackable, :validatable, :invitable, :confirmable,
                        :omniauthable, omniauth_providers: [:suse, :google, :facebook, :github]]
                     end
 
