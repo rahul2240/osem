@@ -14,6 +14,8 @@ class Booth < ApplicationRecord
   has_many :responsibles_booth_user, -> { where(role: 'responsible') }, class_name: 'BoothRequest'
   has_many :responsibles, through: :responsibles_booth_user, source: :user
 
+  attr_accessor :invited_users
+
   validates :title,
             uniqueness: { case_sensitive: false },
             presence:   true
