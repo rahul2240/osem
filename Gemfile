@@ -228,6 +228,9 @@ gem 'bootstrap-tagsinput-rails'
 # for iniviting users
 gem 'devise_invitable', '~> 2.0.0'
 
+# for unsubscribe link
+gem 'mailkick'
+
 # Use guard and spring for testing in development
 group :development do
   # to launch specs when files are modified
