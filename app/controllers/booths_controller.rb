@@ -25,7 +25,12 @@ class BoothsController < ApplicationController
       emails_array = booth_params[:invited_users].split(",")
 
       emails_array.each do |email|
-        User.invite!(email: email)
+        if User.find_by(email: email).nil?
+          User.invite!(email: email, username: email)
+        end
+        if @booth.responsible_ids.exclude?(User.find_by(email: email).id)
+          @booth.responsible_ids = @booth.responsible_ids.append(User.find_by(email: email).id)
+        end
       end
     end
 
