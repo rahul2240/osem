@@ -151,26 +151,6 @@ module ApplicationHelper
     )
   end
 
-  def invite_people_input(form)
-    user_invite_input(
-      :invited_users,
-      form,
-      'Enter emails to invite people.'
-    )
-  end
-
-  def user_invite_input(field, form, hint = '', multiple = true)
-    form.input(
-      field,
-      include_blank: true,
-      label:         field.to_s.titleize,
-      hint:          hint,
-      input_html:    {
-        data: { role: 'tagsinput' }
-      }
-    )
-  end
-
   def event_types_sentence(conference)
     conference.event_types.map { |et| et.title.pluralize }.to_sentence
   end
