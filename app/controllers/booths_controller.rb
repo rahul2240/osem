@@ -51,6 +51,19 @@ class BoothsController < ApplicationController
     @url = conference_booth_path(@conference.short_title, @booth.id)
     @booth.update_attributes(booth_params)
 
+    if booth_params[:invited_users]
+      emails_array = booth_params[:invited_users].split(",")
+
+      emails_array.each do |email|
+        if User.find_by(email: email).nil?
+          User.invite!(email: email)
+        end
+        if @booth.responsible_ids.exclude?(User.find_by(email: email).id)
+          @booth.responsible_ids = @booth.responsible_ids.append(User.find_by(email: email).id)
+        end
+      end
+    end
+
     if @booth.save
       redirect_to conference_booths_path,
                   notice: 'Booth successfully updated!'
