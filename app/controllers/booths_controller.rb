@@ -26,7 +26,7 @@ class BoothsController < ApplicationController
 
       emails_array.each do |email|
         if User.find_by(email: email).nil?
-          User.invite!(email: email, username: email)
+          User.invite!(email: email)
         end
         if @booth.responsible_ids.exclude?(User.find_by(email: email).id)
           @booth.responsible_ids = @booth.responsible_ids.append(User.find_by(email: email).id)
