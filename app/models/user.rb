@@ -60,7 +60,7 @@ class User < ApplicationRecord
 
   has_many :openids
 
-  attr_accessor :login
+  attr_accessor :login, :invitation_message
 
   has_many :event_users, dependent: :destroy
   has_many :events, -> { distinct }, through: :event_users

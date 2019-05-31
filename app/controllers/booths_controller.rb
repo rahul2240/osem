@@ -26,7 +26,9 @@ class BoothsController < ApplicationController
 
       emails_array.each do |email|
         if User.find_by(email: email).nil?
-          User.invite!(email: email)
+          User.invite!(email: email) do |user|
+            user.invitation_message = "booth responsible of " + booth_params[:title]
+          end
         end
         if @booth.responsible_ids.exclude?(User.find_by(email: email).id)
           @booth.responsible_ids = @booth.responsible_ids.append(User.find_by(email: email).id)
@@ -56,7 +58,9 @@ class BoothsController < ApplicationController
 
       emails_array.each do |email|
         if User.find_by(email: email).nil?
-          User.invite!(email: email)
+          User.invite!(email: email) do |user|
+            user.invitation_message = "To become booth responsible of " + booth_params[:title]
+          end
         end
         if @booth.responsible_ids.exclude?(User.find_by(email: email).id)
           @booth.responsible_ids = @booth.responsible_ids.append(User.find_by(email: email).id)

@@ -1,7 +1,10 @@
 <p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
 
-<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
+<p><%= @resource.invited_by %> has invited you, </p>
 
+<p>to become <%= @resource.invitation_message %></p>
+
+<p>Click on the link below to accept the invitation</p>
 <p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, invitation_token: @token) %></p>
 
 <% if @resource.invitation_due_at %>
