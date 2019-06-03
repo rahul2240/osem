@@ -12,6 +12,7 @@
           hint: 'e.g. employee, comunity manager, etc'
         = f.input :website_url
         = responsibles_selector_input f
+        = f.input :invited_users
         = image_tag f.object.picture.thumb.url if f.object.picture?
         = f.input :picture
 
