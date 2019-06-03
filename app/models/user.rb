@@ -30,6 +30,8 @@ class User < ApplicationRecord
 
   after_save :touch_events
 
+  mailkick_user
+
   # add scope
   scope :comment_notifiable, ->(conference) {joins(:roles).where('roles.name IN (?)', [:organizer, :cfp]).where('roles.resource_type = ? AND roles.resource_id = ?', 'Conference', conference.id)}
 

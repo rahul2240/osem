@@ -224,6 +224,9 @@ gem 'nokogiri', '>= 1.8.1'
 # memcached binary connector
 gem 'dalli'
 
+# unsubscribe from emails
+gem 'mailkick'
+
 # Use guard and spring for testing in development
 group :development do
   # to launch specs when files are modified
