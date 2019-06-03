@@ -76,6 +76,7 @@ gem 'uglifier', '>= 1.3.0'
 # as the front-end framework
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass', '~> 3.4.0'
+gem 'bootstrap-tagsinput-rails'
 gem 'cocoon'
 gem 'formtastic', '~> 3.1.5'
 gem 'formtastic-bootstrap'

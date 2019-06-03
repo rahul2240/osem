@@ -47,6 +47,7 @@
 //= require countable
 //= require selectize
 //= require bootstrap-select
+//= require bootstrap-tagsinput
 //= require osem-survey
 
 $(document).ready(function() {
