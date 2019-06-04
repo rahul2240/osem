@@ -21,6 +21,21 @@ class BoothsController < ApplicationController
 
     @booth.submitter = current_user
 
+    if booth_params[:invited_users] && @booth.save
+      emails_array = booth_params[:invited_users].split(",")
+
+      emails_array.each do |email|
+        if User.find_by(email: email).nil?
+          User.invite!({email: email}, current_user) do |user|
+            user.invitation_message = "booth responsible of " + booth_params[:title]
+          end
+        end
+        if @booth.responsible_ids.exclude?(User.find_by(email: email).id)
+          @booth.responsible_ids = @booth.responsible_ids.append(User.find_by(email: email).id)
+        end
+      end
+    end
+
     if @booth.save
       redirect_to conference_booths_path,
                   notice: 'Booth successfully created.'
@@ -37,6 +52,21 @@ class BoothsController < ApplicationController
   def update
     @url = conference_booth_path(@conference.short_title, @booth.id)
     @booth.update_attributes(booth_params)
+
+    if booth_params[:invited_users]
+      emails_array = booth_params[:invited_users].split(",")
+
+      emails_array.each do |email|
+        if User.find_by(email: email).nil?
+          User.invite!({email: email}, current_user) do |user|
+            user.invitation_message = "to become booth responsible of " + booth_params[:title]
+          end
+        end
+        if @booth.responsible_ids.exclude?(User.find_by(email: email).id)
+          @booth.responsible_ids = @booth.responsible_ids.append(User.find_by(email: email).id)
+        end
+      end
+    end
 
     if @booth.save
       redirect_to conference_booths_path,
@@ -94,6 +124,6 @@ class BoothsController < ApplicationController
 
   def booth_params
     params.require(:booth).permit(:title, :description, :reasoning, :state, :picture, :conference_id,
-                                  :created_at, :updated_at, :submitter_relationship, :website_url, responsible_ids: [])
+                                  :created_at, :updated_at, :submitter_relationship, :website_url, :invited_users, responsible_ids: [])
   end
 end

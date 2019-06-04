@@ -8,6 +8,7 @@ end
 
 class User < ApplicationRecord
   rolify
+  mailkick_user
   # prevent N+1 queries with has_cached_role? by preloading roles *always*
   default_scope { preload(:roles) }
 
@@ -49,15 +50,17 @@ class User < ApplicationRecord
                       [:ichain_authenticatable, :ichain_registerable, :omniauthable, omniauth_providers: []]
                     else
                       [:database_authenticatable, :registerable,
-                       :recoverable, :rememberable, :trackable, :validatable, :confirmable,
+                       :recoverable, :rememberable, :trackable, :validatable, :invitable, :confirmable,
                        :omniauthable, omniauth_providers: [:suse, :google, :facebook, :github]]
                     end
 
   devise(*devise_modules)
 
+  mailkick_user
+
   has_many :openids
 
-  attr_accessor :login
+  attr_accessor :login, :invitation_message
 
   has_many :event_users, dependent: :destroy
   has_many :events, -> { distinct }, through: :event_users
@@ -289,6 +292,6 @@ class User < ApplicationRecord
   end
 
   def send_devise_notification(notification, *args)
-    devise_mailer.send(notification, self, *args).deliver_later
+    devise_mailer.send(notification, self, *args).deliver_now
   end
 end

@@ -88,6 +88,8 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
     bootstrap-switch-rails (3.0.2)
+    bootstrap-tagsinput-rails (0.4.2.1)
+      railties (>= 3.1)
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
     builder (3.2.3)
@@ -160,6 +162,9 @@ GEM
       warden (~> 1.2.3)
     devise_ichain_authenticatable (0.3.2)
       devise (>= 2.2)
+    devise_invitable (2.0.1)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     diff-lcs (1.3)
     docile (1.3.1)
     domain_name (0.5.20180417)
@@ -276,6 +281,8 @@ GEM
     lumberjack (1.0.12)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    mailkick (0.3.1)
+      activesupport (>= 4.2)
     method_source (0.8.2)
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
@@ -619,6 +626,7 @@ DEPENDENCIES
   axlsx_rails
   bootstrap-sass (~> 3.4.0)
   bootstrap-switch-rails (~> 3.0.0)
+  bootstrap-tagsinput-rails
   bootstrap3-datetimepicker-rails (~> 4.17.47)
   byebug
   cancancan
@@ -639,6 +647,7 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   devise_ichain_authenticatable
+  devise_invitable (~> 2.0.0)
   dotenv-rails
   factory_bot_rails
   faker
@@ -658,6 +667,7 @@ DEPENDENCIES
   json-schema
   leaflet-rails
   letter_opener
+  mailkick
   mina
   mini_magick
   money-rails

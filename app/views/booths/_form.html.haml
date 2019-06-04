@@ -12,6 +12,7 @@
           hint: 'e.g. employee, comunity manager, etc'
         = f.input :website_url
         = responsibles_selector_input f
+        = f.input :invited_users, input_html: { data: { role: "tagsinput" } }
         = image_tag f.object.picture.thumb.url if f.object.picture?
         = f.input :picture
 
@@ -27,4 +28,11 @@
         plugins: ['remove_button'],
         minItems: 2
       } )
+    });
+    $('input').on('beforeItemAdd', function(event) {
+      // check item contents
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(event.item)) {
+        // set to true to prevent the item getting added
+        event.cancel = true;
+      }
     });
