@@ -38,6 +38,24 @@ module Admin
       @booth.submitter = current_user
 
       if @booth.save
+
+        if booth_params[:invited_users]
+          emails_array = booth_params[:invited_users].split(',')
+
+          emails_array.each do |email|
+            if User.find_by(email: email).nil? || ((!User.find_by(email: email).confirmed? &&
+                                                    !User.find_by(email: email).opted_out?))
+              User.invite!({ email: email }, current_user) do |user|
+                user.invitation_message = 'booth responsible of ' + booth_params[:title]
+              end
+            end
+            if User.find_by(email: email) && @booth.responsible_ids.exclude?(User.find_by(email: email).id)
+              BoothRequest.create(booth_id: @booth.id, user_id: User.find_by(email: email).id,
+                                  role: 'responsible')
+            end
+          end
+        end
+
         redirect_to admin_conference_booths_path,
                     notice: 'Booth successfully created.'
       else
@@ -54,6 +72,23 @@ module Admin
       @url = admin_conference_booth_path(@conference.short_title, @booth.id)
 
       @booth.update_attributes(booth_params)
+
+      if booth_params[:invited_users]
+        emails_array = booth_params[:invited_users].split(',')
+
+        emails_array.each do |email|
+          if User.find_by(email: email).nil? || ((!User.find_by(email: email).confirmed? &&
+                                                  !User.find_by(email: email).opted_out?))
+            User.invite!({ email: email }, current_user) do |user|
+              user.invitation_message = 'booth responsible of ' + booth_params[:title]
+            end
+          end
+          if User.find_by(email: email) && @booth.responsible_ids.exclude?(User.find_by(email: email).id)
+            BoothRequest.create(booth_id: @booth.id, user_id: User.find_by(email: email).id,
+                                role: 'responsible')
+          end
+        end
+      end
 
       if @booth.save
         redirect_to admin_conference_booths_path,
@@ -129,7 +164,8 @@ module Admin
 
     def booth_params
       params.require(:booth).permit(:title, :description, :reasoning, :state, :picture, :conference_id,
-                                    :created_at, :updated_at, :submitter_relationship, :website_url, responsible_ids: [])
+                                    :created_at, :updated_at, :submitter_relationship, :website_url, :invited_users,
+                                    responsible_ids: [])
     end
   end
 end

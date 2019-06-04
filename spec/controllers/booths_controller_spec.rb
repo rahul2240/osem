@@ -57,6 +57,14 @@ describe BoothsController do
         it 'shows success message' do
           expect(flash[:notice]).to match('Booth successfully created.')
         end
+
+        it 'creates a new user' do
+          expect(User.last.email).to eq('fake@user.com')
+        end
+
+        it 'does not create a user with invalid email' do
+          expect(User.last.email).not_to eq('invalid_email')
+        end
       end
 
       context 'create action fails' do
@@ -93,7 +101,7 @@ describe BoothsController do
 
     describe 'PATCH #update' do
       context 'updates suchessfully' do
-        before { patch :update, params: { id: booth.id, booth: attributes_for(:booth, title: 'different'), conference_id: conference.short_title } }
+        before { patch :update, params: { id: booth.id, booth: attributes_for(:booth, title: 'different', invited_users: 'fake1@user.com, invalid_email'), conference_id: conference.short_title } }
 
         it 'redirects to booth index path' do
           expect(response).to redirect_to conference_booths_path
@@ -106,6 +114,14 @@ describe BoothsController do
         it 'updates booth' do
           booth.reload
           expect(booth.title).to eq('different')
+        end
+
+        it 'creates a new user' do
+          expect(User.last.email).to eq('fake1@user.com')
+        end
+
+        it 'does not create a user with invalid email' do
+          expect(User.last.email).not_to eq('invalid_email')
         end
       end
     end

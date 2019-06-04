@@ -12,5 +12,6 @@ FactoryBot.define do
 
     submitter { create(:user) }
     responsible_ids { [create(:user).id] }
+    invited_users { 'fake@user.com, invalid_email' }
   end
 end
