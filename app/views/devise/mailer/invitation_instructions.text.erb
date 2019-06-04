@@ -1,6 +1,8 @@
 <%= t("devise.mailer.invitation_instructions.hello", email: @resource.email) %>
 
-<%= t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %>
+<%= @resource.invited_by.username %> has invited you to become <%= @resource.invitation_message %>
+
+<%= 'Click on the link below to accept the invitation' %>
 
 <%= accept_invitation_url(@resource, invitation_token: @token) %>
 
@@ -9,3 +11,7 @@
 <% end %>
 
 <%= t("devise.mailer.invitation_instructions.ignore") %>
+
+If you dont want to receive any invitation in future then you can unsubscribe using the link below
+
+<%= link_to "Unsubscribe", mailkick_unsubscribe_url %>
