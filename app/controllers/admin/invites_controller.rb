@@ -9,7 +9,20 @@ module Admin
     end
 
     def create_late_booth
-      print(late_booth_params[:emails])
+      if late_booth_params[:emails]
+          emails_array = late_booth_params[:emails].split(",")
+
+          emails_array.each do |email|
+            if User.find_by(email: email).nil? || ((!User.find_by(email: email).confirmed? &&
+                                                    !User.find_by(email: email).opted_out?))
+              User.invite!({email: email}, current_user) do |user|
+                user.invitation_message = "submit booth request " + @conference.title
+              end
+            end
+
+          end
+        end
+      flashnow[:notice] = 'Successfully sent invitations'
       render 'late_booth'
     end
 
