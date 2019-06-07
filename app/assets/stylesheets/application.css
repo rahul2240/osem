@@ -20,5 +20,6 @@
  *= require selectize.bootstrap3
  *= require mastodon
  *= require bootstrap-select
+ *= require bootstrap-tagsinput
  *= require conferences
 */

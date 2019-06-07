@@ -8,5 +8,15 @@ module Admin
 
     end
 
+    def create_late_booth
+      print(late_booth_params[:emails])
+      render 'late_booth'
+    end
+
+    private
+
+    def late_booth_params
+      params.require(:invite).permit(:emails)
+    end
   end
 end

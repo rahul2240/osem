@@ -79,6 +79,7 @@ gem 'bootstrap-sass', '~> 3.4.0'
 gem 'cocoon'
 gem 'formtastic', '~> 3.1.5'
 gem 'formtastic-bootstrap'
+gem 'bootstrap-tagsinput-rails'
 
 # as the JavaScript library
 gem 'jquery-rails'
