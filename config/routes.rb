@@ -45,7 +45,8 @@ Osem::Application.routes.draw do
       get '/volunteers_list' => 'volunteers#show'
       get '/volunteers' => 'volunteers#index', as: 'volunteers_info'
       patch '/volunteers' => 'volunteers#update', as: 'volunteers_update'
-
+      get '/booth_invitations' => 'invites#late_booth', as: 'late_booth_invite'
+      post '/booth_invitations' => 'invites#create_late_booth'
       resources :booths do
         member do
           patch :accept
