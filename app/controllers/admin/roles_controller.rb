@@ -62,10 +62,20 @@ module Admin
               admin_conference_role_path(@conference.short_title, @role.name)
             end
 
+
       unless user
-        redirect_to url,
-                    error: 'Could not find user. Please provide a valid email!'
-        return
+
+        User.invite!({ email: user_params[:email] }, current_user) do |user|
+          user.invitation_message =  @role.name + ' of ' + @conference.title
+        end
+
+        user = User.find_by(email: user_params[:email])
+
+        unless user
+          redirect_to url,
+                      error: 'Could not find user. Please provide a valid email!'
+          return
+        end
       end
 
       # The conference must have at least 1 organizer
