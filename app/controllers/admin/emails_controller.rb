@@ -22,6 +22,17 @@ module Admin
       @settings = @conference.email_settings
     end
 
+    def new_custom_email
+      
+    end
+
+    def custom_email
+      puts ''
+      puts ''
+      puts ''
+      puts custom_email_params
+    end
+
     private
 
     def email_params
@@ -38,6 +49,10 @@ module Admin
                                              :send_on_program_schedule_public, :program_schedule_public_subject, :program_schedule_public_body,
                                              :send_on_booths_acceptance, :booths_acceptance_subject, :booths_acceptance_body,
                                              :send_on_booths_rejection, :booths_rejection_subject, :booths_rejection_body)
+    end
+
+    def custom_email_params
+      params.require(:admin_email).permit(:to, :subject, :body)
     end
   end
 end
