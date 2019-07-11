@@ -137,4 +137,12 @@ class Mailbot < ActionMailer::Base
          template_name: 'comment_template',
          subject:       "New comment has been posted for #{@event.title}")
   end
+
+  def send_custom_mail(conference, to, subject, body)
+    mail(to: to,
+         from: conference.contact.email,
+         subject: subject,
+         body: body)
+  end
+
 end

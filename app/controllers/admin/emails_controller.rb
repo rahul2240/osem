@@ -27,8 +27,14 @@ module Admin
     end
 
     def custom_email
-      puts custom_email_params
+      emails_array = custom_email_params[:to].split(',')
+      subject = custom_email_params[:subject]
+      body = custom_email_params[:body]
+      emails_array.each do |email|
+        Mailbot.send_custom_mail(@conference, email, subject, body).deliver_now
+      end
       render 'new_custom_email'
+
     end
 
     private
