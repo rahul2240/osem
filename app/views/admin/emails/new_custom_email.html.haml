@@ -8,7 +8,7 @@
         .panel-body
           = form_for(:admin_email, url: admin_conference_custom_email_path) do |f|
             = f.label :to
-            = f.text_field :to, class: 'form-control', required: true
+            = f.text_field :to, class: 'form-control', required: true, data: {keys: @keys}
             %br
             = f.label :subject
             = f.text_field :subject, class: 'form-control', required: true
@@ -26,7 +26,6 @@
         delimiter: ',',
         persist: false,
         plugins: ['remove_button'],
-        options: [{item: 'Users'},{item: 'View'}, {item: 'Org'}],
         labelField:  'item',
         valueField:  'item',
         sortField:   'item',
@@ -34,10 +33,22 @@
       } )
 
       var selectizeControl = $select[0].selectize;
-      var tags = {"Users": ['abc@gmail.com','vcd@gma.com'], "Org": ['org.com'], "View": ['asd', 'qwew']};
+      var tags = $('#admin_email_to').data('keys')
+      for(var i in tags){
+        selectizeControl.addOption({item: i});
+      }
+
+
 
       selectizeControl.on('change', function() {
             var test = selectizeControl.getValue();
+            if (test==''){
+              selectizeControl.clearOptions();
+              for(var i in tags){
+                selectizeControl.addOption({item: i});
+              }
+            }
+
             if (test in tags){
               for (var i = 0, n = tags[test].length; i < n; i++) {
                   selectizeControl.addOption({item: tags[test][i]});

@@ -23,7 +23,15 @@ module Admin
     end
 
     def new_custom_email
-      @keys = User.pluck(:email)
+      subscriber_ids = @conference.subscriptions.pluck(:user_id)
+      booths_responsible_ids = BoothRequest.where(booth_id: @conference.booth_ids).pluck(:user_id)
+      confirmed_booth_ids = BoothRequest.where(booth_id: @conference.confirmed_booths.ids).pluck(:user_id)
+
+      @keys = Hash.new()
+      @keys['Users'] = User.pluck(:email)
+      @keys['Subscribers'] = User.find(subscriber_ids).pluck(:email)
+      @keys['BoothsResponsible'] = User.find(booths_responsible_ids.uniq).pluck(:email)
+      @keys['ConfirmedBooths'] = User.find(confirmed_booth_ids.uniq).pluck(:email)
     end
 
     def custom_email
