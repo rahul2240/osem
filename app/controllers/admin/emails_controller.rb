@@ -23,14 +23,12 @@ module Admin
     end
 
     def new_custom_email
-      
+      @keys = User.pluck(:email)
     end
 
     def custom_email
-      puts ''
-      puts ''
-      puts ''
       puts custom_email_params
+      render 'new_custom_email'
     end
 
     private
