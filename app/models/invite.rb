@@ -1,8 +1,10 @@
 class Invite < ApplicationRecord
+  attr_accessor :emails
+
   belongs_to :conference
 
   validates :end_date, presence: true
-  validate :content, presence: true
-  validate :user_id
-  
+  validates :content, presence: true
+  validates :user_id, presence: true
+
 end
