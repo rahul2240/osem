@@ -93,7 +93,12 @@ class Ability
     can [:index, :show], PhysicalTicket, user: user
 
     can [:new, :create], Booth do |booth|
-      booth.new_record? && booth.conference.program.cfps.for_booths.try(:open?)
+      invited_user = Invite.find_by(user_id: user.id)
+      if invited_user.end_date > Date.today && invited_user.content=='booth' 
+        true
+      else
+        booth.new_record? && booth.conference.program.cfps.for_booths.try(:open?)
+      end
     end
 
     can [:edit, :update, :index, :show], Booth do |booth|
