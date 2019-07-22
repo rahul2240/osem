@@ -59,6 +59,9 @@ Osem::Application.routes.draw do
         end
       end
 
+      get '/invitation' => 'invites#new'
+      post '/invitation' => 'invites#create'
+
       resources :registrations, except: [:create, :new] do
         member do
           patch :toggle_attendance
