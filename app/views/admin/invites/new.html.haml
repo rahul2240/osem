@@ -6,7 +6,7 @@
       = semantic_form_for(@invite,  url: @url, html: { multipart: true }) do |f|
         = f.input :emails, class: 'form-control', required: true
         = f.input :content, as: :select, collection: ['track', 'booth'], label: "Invite For"
-        = f.input :end_date, as: :string, input_html: { id: 'registration-period-start-datepicker', start_date: @conference.start_date, end_date: @conference.end_date }
+        = f.input :end_date, as: :string, input_html: { id: 'invitation-end-date', end_date: @conference.end_date }
 
         %p.text-right
           = f.submit 'Submit', class: 'btn btn-success'

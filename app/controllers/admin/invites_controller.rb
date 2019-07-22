@@ -7,6 +7,18 @@ module Admin
       @url = admin_conference_invitation_path(@conference.short_title)
     end
 
-    def create; end
+    def create
+      @invite = @conference.invites.new(invite_params)
+      if @invite.save
+        render 'new'
+      else
+        render 'new'
+      end
+    end
+
+    private
+      def invite_params
+        params.require(:invite).permit(:emails, :end_date, :content)
+      end
   end
 end

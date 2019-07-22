@@ -74,6 +74,12 @@ $(function () {
        maxDate : end_conference
    });
 
+   $('#invitation-end-date').datetimepicker({
+      format: 'YYYY-MM-DD',
+      minDate : today,
+      maxDate: end_conference
+   });
+
   $("#conference-start-datepicker").on("dp.change",function (e) {
       $('#conference-end-datepicker').data("DateTimePicker").minDate(e.date);
       if (!$('#conference-end-datepicker').val()) {
@@ -102,4 +108,5 @@ $(function () {
   $("#registration-period-end-datepicker").on("dp.change",function (e) {
       $('#registration-period-start-datepicker').data("DateTimePicker").maxDate(e.date);
   });
+
 } );
