@@ -14,6 +14,9 @@
         = responsibles_selector_input f
         = f.input :invite_responsible,
           hint: 'This field is to invite unregistered users using their email to become booth responsibles.'
+        .text-right
+          - if @booth.persisted?
+            = f.input :reinvite, as: :boolean, hint: 'Select to reinvite the invited users.'
         = image_tag f.object.picture.thumb.url if f.object.picture?
         = f.input :picture
 
