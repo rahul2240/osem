@@ -34,12 +34,32 @@ describe Admin::BoothsController do
     describe 'GET index' do
       before { get :index, params: { conference_id: conference.short_title } }
 
-      it 'assigns attributes for booths' do
-        expect(assigns(:booths)).to eq([booth])
+      context 'only viewing' do
+
+        it 'assigns attributes for booths' do
+          expect(assigns(:booths)).to eq([booth])
+        end
+
+        it 'renders index template' do
+          expect(response).to render_template('index')
+        end
       end
 
-      it 'renders index template' do
-        expect(response).to render_template('index')
+      context 'changing bulk state' do
+        before(:example) do
+          post :create, params: { booth: attributes_for(:booth, title: 'example1'), conference_id: conference.short_title }
+          post :create, params: { booth: attributes_for(:booth, title: 'example2'), conference_id: conference.short_title }
+          get :index, params: { conference_id: conference.short_title }
+        end
+
+        it 'before selecting state' do
+          expect(Booth.where(title: ['example1', 'example2']).pluck(:state)).to eq(['new', 'new'])
+        end
+
+        it 'after selecting state' do
+          post :booths_state, params: { booth: { current_booth_state: 'new', new_booth_state: 'Reject' }, conference_id: conference.short_title }
+          expect(Booth.where(title: ['example1', 'example2']).pluck(:state)).to eq(['rejected', 'rejected'])
+        end
       end
     end
 
@@ -75,7 +95,7 @@ describe Admin::BoothsController do
         end
 
         it 'shows success message' do
-          expect(flash[:notice]).to match('Booth successfully created.')
+          expect(flash[:notice]).to match("#{(t 'booth').capitalize} successfully created.")
         end
 
         it 'creates a new user on inviting booth responsible' do
@@ -106,7 +126,7 @@ describe Admin::BoothsController do
         end
 
         it 'shows flash message' do
-          expect(flash[:error]).to eq("Creating booth failed. Title can't be blank.")
+          expect(flash[:error]).to eq("Creating #{t 'booth'} failed. Title can't be blank.")
         end
       end
     end
@@ -131,7 +151,7 @@ describe Admin::BoothsController do
         end
 
         it 'shows success message' do
-          expect(flash[:notice]).to match 'Successfully updated booth.'
+          expect(flash[:notice]).to match "Successfully updated #{t 'booth'}."
         end
 
         it 'updates booth' do
