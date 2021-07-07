@@ -22,6 +22,29 @@ module Admin
       @settings = @conference.email_settings
     end
 
+    def new_custom_email
+      subscriber_ids = @conference.subscriptions.pluck(:user_id)
+      booths_responsible_ids = BoothRequest.where(booth_id: @conference.booth_ids).pluck(:user_id)
+      confirmed_booth_ids = BoothRequest.where(booth_id: @conference.confirmed_booths.ids).pluck(:user_id)
+
+      @keys = Hash.new()
+      @keys['Users'] = User.pluck(:email)
+      @keys['Subscribers'] = User.find(subscriber_ids).pluck(:email)
+      @keys['BoothsResponsible'] = User.find(booths_responsible_ids.uniq).pluck(:email)
+      @keys['ConfirmedBooths'] = User.find(confirmed_booth_ids.uniq).pluck(:email)
+    end
+
+    def custom_email
+      emails_array = custom_email_params[:to].split(',')
+      subject = custom_email_params[:subject]
+      body = custom_email_params[:body]
+      emails_array.each do |email|
+        Mailbot.send_custom_mail(@conference, email, subject, body).deliver_now
+      end
+      render 'new_custom_email'
+
+    end
+
     private
 
     def email_params
@@ -38,6 +61,10 @@ module Admin
                                              :send_on_program_schedule_public, :program_schedule_public_subject, :program_schedule_public_body,
                                              :send_on_booths_acceptance, :booths_acceptance_subject, :booths_acceptance_body,
                                              :send_on_booths_rejection, :booths_rejection_subject, :booths_rejection_body)
+    end
+
+    def custom_email_params
+      params.require(:admin_email).permit(:to, :subject, :body)
     end
   end
 end

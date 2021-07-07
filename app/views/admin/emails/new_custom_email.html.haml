@@ -1,0 +1,62 @@
+.container
+  .row
+    .col-md-6.col-md-offset-2
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title
+            Email
+        .panel-body
+          = form_for(:admin_email, url: admin_conference_custom_email_path) do |f|
+            = f.label :to
+            = f.text_field :to, class: 'form-control', required: true, data: {keys: @keys}
+            %br
+            = f.label :subject
+            = f.text_field :subject, class: 'form-control', required: true
+            %br
+            = f.label :body
+            = f.text_area :body, class: 'form-control', required: true
+            %br
+            %p.text-right
+              = f.submit 'submit', class: 'btn btn-primary'
+
+  :javascript
+
+    $(document).ready(function() {
+      var $select = $('#admin_email_to').selectize({
+        delimiter: ',',
+        persist: false,
+        plugins: ['remove_button'],
+        labelField:  'item',
+        valueField:  'item',
+        sortField:   'item',
+        searchField: 'item'
+      } )
+
+      var selectizeControl = $select[0].selectize;
+      var tags = $('#admin_email_to').data('keys')
+      for(var i in tags){
+        selectizeControl.addOption({item: i});
+      }
+
+
+
+      selectizeControl.on('change', function() {
+            var test = selectizeControl.getValue();
+            if (test==''){
+              selectizeControl.clearOptions();
+              for(var i in tags){
+                selectizeControl.addOption({item: i});
+              }
+            }
+
+            if (test in tags){
+              for (var i = 0, n = tags[test].length; i < n; i++) {
+                  selectizeControl.addOption({item: tags[test][i]});
+              }
+              selectizeControl.setValue(tags[test]);
+              selectizeControl.clearOptions();
+            }else {
+              selectizeControl.refreshOptions();
+            }
+      });
+      });
